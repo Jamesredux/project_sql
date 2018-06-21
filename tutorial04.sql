@@ -39,3 +39,38 @@ WHERE continent = 'Europe');
 
 #7
 
+SELECT continent, name, area FROM world x
+  WHERE area >= ALL
+    (SELECT area FROM world y
+        WHERE y.continent=x.continent
+          AND area>0)
+
+ #8
+ 
+ SELECT continent, name FROM world
+GROUP BY continent
+ORDER BY name;
+
+
+#9
+
+SELECT name, continent, population 
+FROM world 
+WHERE continent IN 
+  (SELECT continent FROM world x 
+     WHERE 25000000 >= 
+       (SELECT MAX(population) FROM world y 
+          WHERE x.continent = y.continent))
+
+#10
+
+SELECT name, continent
+FROM world x
+WHERE population/3 > ALL (
+  SELECT y.population
+  FROM world y
+  WHERE x.continent = y.continent
+  AND x.name <> y.name)
+
+
+
